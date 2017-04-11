@@ -35,6 +35,11 @@ define([
     "dojo/_base/event",
 
     "MyWidget/lib/jquery-1.11.2",
+    "MyWidget/lib/d3.min",
+    "MyWidget/lib/App",
+    "MyWidget/lib/Layers",
+    "MyWidget/lib/Layer",
+    "MyWidget/lib/TreeBar",
     "dojo/text!MyWidget/widget/template/MyWidget.html"
 ], function (declare, _WidgetBase, _TemplatedMixin, dom, dojoDom, dojoProp, dojoGeometry, dojoClass, dojoStyle, dojoConstruct, dojoArray, dojoLang, dojoText, dojoHtml, dojoEvent, _jQuery, widgetTemplate) {
     "use strict";
