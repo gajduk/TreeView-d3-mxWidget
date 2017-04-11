@@ -35,3 +35,24 @@ jspm_packages
 
 # Optional REPL history
 .node_repl_history
+
+test/javasource/
+test/deployment/
+test/.classpath
+test/.project
+test/theme/
+test/userlib/
+test/.classpath
+test/.project
+*.launch
+*.tmp
+*.lock
+.idea/
+
+dist/
+
+node_modules/
+.editorconfig
+*DS_Store*
+.vscode/
+*.bak
