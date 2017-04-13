@@ -36,14 +36,12 @@ define([
 
     "MyWidget/lib/jquery-1.11.2",
     "MyWidget/lib/d3.min",
-    "MyWidget/lib/App",
-    "MyWidget/lib/Layers",
-    "MyWidget/lib/Layer",
-    "MyWidget/lib/TreeBar",
+    "MyWidget/lib/TreeBarComplete",
     "dojo/text!MyWidget/widget/template/MyWidget.html"
-], function (declare, _WidgetBase, _TemplatedMixin, dom, dojoDom, dojoProp, dojoGeometry, dojoClass, dojoStyle, dojoConstruct, dojoArray, dojoLang, dojoText, dojoHtml, dojoEvent, _jQuery, widgetTemplate) {
+], function (declare, _WidgetBase, _TemplatedMixin, dom, dojoDom, dojoProp, dojoGeometry, dojoClass, dojoStyle, dojoConstruct,
+    dojoArray, dojoLang, dojoText, dojoHtml, dojoEvent, _jQuery, _d3, _TreeBarComplete, widgetTemplate) {
     "use strict";
-
+    var layers = _TreeBarComplete();
     var $ = _jQuery.noConflict(true);
 
     // Declare widget's prototype.
@@ -56,6 +54,7 @@ define([
         colorSelectNode: null,
         colorInputNode: null,
         infoTextNode: null,
+        treeContainer: null,
 
         // Parameters configured in the Modeler.
         mfToExecute: "",
@@ -68,20 +67,54 @@ define([
         _alertDiv: null,
         _readOnly: false,
 
+        tree: null,
+
         // dojo.declare.constructor is called to construct the widget instance. Implement to initialize non-primitive properties.
         constructor: function () {
             logger.debug(this.id + ".constructor");
             this._handles = [];
         },
 
+        treeItemSelect: function(d) {
+      		console.log("item selected");
+      	},
+
+      	treeItemOver: function(d) {
+      		console.log("item over");
+      	},
+
+      	treeItemOut: function(d) {
+      		console.log("item out");
+      	},
+
+      	treemousemove: function(d) {
+      		console.log("mousemove");
+      	},
+
+      	treeColor: function(d) {
+  	        return "rgb(" + 200+ "," + 100 + "," + 50 + ")";
+  	    },
+
+
+
         // dijit._WidgetBase.postCreate is called after constructing the widget. Implement to do extra setup work.
         postCreate: function () {
             logger.debug(this.id + ".postCreate");
-
+            var self = this;
             if (this.readOnly || this.get("disabled") || this.readonly) {
               this._readOnly = true;
             }
+            $.getScript("widgets/MyWidget/lib/data.js",function (d,textStatus,jqxhr){
 
+              self.tree = layers.treeBar();
+              self.tree.on('select', self.treeItemSelect)
+                .on('mouseover', self.treeItemOver)
+                .on('mouseout', self.treeItemOut)
+                .on('mousemove', self.treemousemove);
+              self.tree.addTo(self.treeContainer)
+                .color(self.treeColor)
+                .data(data);
+            });
             this._updateRendering();
             this._setupEvents();
         },
